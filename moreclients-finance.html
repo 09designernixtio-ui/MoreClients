@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Modern Finance — MoreClients</title>
+<meta name="description" content="A free operational scorecard to assess your SaaS finance function, plus leadership training built for growth-stage teams." />
+
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" />
+
+<style>
+  :root{
+    --ink:#09090b;
+    --body:#3f3f46;
+    --muted:#71717a;
+    --emphasis:#a1a1aa;
+    --chip-bg:#fafafa;
+    --chip-border:#f4f4f5;
+    --card-bg:#ececee;
+    --surface:#ffffff;
+    --section-alt:#f4f4f5;
+    --line:#ececee;
+    --accent-navy:#101a2c;
+    --accent-green:#132218;
+    --accent-plum:#1f1726;
+    --accent-black:#0c0d0f;
+    --radius-card:28px;
+    --radius-btn:16px;
+    --radius-input:14px;
+    --container:1280px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:auto;}
+  body{
+    margin:0;
+    background:var(--surface);
+    color:var(--ink);
+    font-family:'General Sans', -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  p{margin:0;}
+  .wrap{max-width:var(--container);margin:0 auto;padding:0 40px;}
+  section{position:relative;}
+  .eyebrow{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:-0.01em;margin-bottom:14px;display:block;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px 26px;border-radius:var(--radius-btn);
+    font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;
+    transition:transform .3s cubic-bezier(.16,1,.3,1), background .2s ease, box-shadow .3s ease, border-color .2s ease;
+  }
+  .btn-dark{background:var(--ink);color:#fff;box-shadow:0 0 0 1.5px #2c2e34, 0 4px 6px rgba(0,0,0,0.14), inset 0 0.5px 0 rgba(255,255,255,0.5);}
+  .btn-dark:hover{background:#000;transform:translateY(-2px);box-shadow:0 0 0 1.5px #2c2e34, 0 8px 16px rgba(0,0,0,0.22), inset 0 0.5px 0 rgba(255,255,255,0.5);}
+  .btn-dark:active{transform:scale(0.97);}
+  .btn-outline{background:#fff;border:1px solid var(--chip-border);color:var(--ink);}
+  .btn-outline:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+  .btn-outline:active{transform:scale(0.97);}
+
+  /* ===== NAV ===== */
+  .site-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:76px;display:flex;align-items:center;background:rgba(255,255,255,0.0);border-bottom:1px solid transparent;transition:background .3s ease, border-color .3s ease, backdrop-filter .3s ease;}
+  .site-nav.scrolled{background:rgba(255,255,255,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line);}
+  .nav-inner{width:100%;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-size:20px;font-weight:700;letter-spacing:-0.02em;}
+  .nav-links{display:flex;gap:32px;}
+  .nav-links a{font-size:14.5px;font-weight:500;color:var(--body);transition:color .2s ease;}
+  .nav-links a:hover,.nav-links a.current{color:var(--ink);}
+  .nav-right{display:flex;align-items:center;gap:20px;}
+  .nav-burger{display:none;background:none;border:none;color:var(--ink);cursor:pointer;padding:8px;}
+  @media (max-width:900px){.nav-links{display:none;}.nav-burger{display:block;}}
+
+  .reveal{opacity:0;transform:translateY(24px);}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1 !important;transform:none !important;}}
+
+  /* ===== HERO ===== */
+  .hero{padding:120px 0 90px;}
+  .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center;}
+  .hero-headline{font-size:clamp(2.1rem,3.6vw,48px);line-height:1.15;letter-spacing:-0.02em;font-weight:600;margin-bottom:20px;}
+  .hero-sub{font-size:17px;font-weight:600;color:var(--ink);margin-bottom:18px;}
+  .hero-body{font-size:15.5px;line-height:1.65;color:var(--body);margin-bottom:28px;max-width:52ch;}
+  .pyramid{width:100%;}
+
+  /* quadrant diagram */
+  .quadrant-wrap{position:relative;width:100%;max-width:420px;margin:0 auto;}
+  .quadrant-grid{position:relative;width:100%;aspect-ratio:1/1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;}
+  .q-card{padding:18px;display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff;box-shadow:0 8px 20px rgba(0,0,0,0.08);transition:transform .3s ease;}
+  .q-card:hover{transform:scale(1.02);}
+  .q-card.radius-a{border-radius:35% 20px 35% 20px;}
+  .q-card.radius-b{border-radius:20px 35% 20px 35%;}
+  .q-card.content-top{justify-content:flex-start;}
+  .q-card.content-bottom{justify-content:flex-end;}
+  .q-card svg{width:26px;height:26px;opacity:.9;margin-bottom:8px;}
+  .q-card h3{font-size:13px;font-weight:700;line-height:1.3;letter-spacing:.01em;margin:6px 0;}
+  .q-card .sub{font-size:10.5px;font-weight:500;color:rgba(255,255,255,.8);line-height:1.5;}
+  .quadrant-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46%;height:46%;background:rgba(15,23,42,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 15px 50px rgba(0,0,0,.4);z-index:2;padding:8px;}
+  .quadrant-core .dot{width:8px;height:8px;background:#2dd4bf;border-radius:50%;margin-bottom:8px;box-shadow:0 0 12px rgba(45,212,191,.8);animation:pulse-dot 2s ease-in-out infinite;}
+  .quadrant-core h2{color:#fff;font-size:13px;font-weight:700;line-height:1.3;letter-spacing:.01em;margin-bottom:4px;}
+  .quadrant-core p{color:#5eead4;font-size:10.5px;font-weight:500;}
+  @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+  @media (max-width:900px){
+    .hero{padding:120px 0 60px;}
+    .hero-grid{grid-template-columns:1fr;gap:40px;}
+    .pyramid-wrap,.quadrant-wrap{order:-1;max-width:320px;margin:0 auto;}
+    .q-card{padding:12px;}
+    .q-card h3{font-size:11.5px;}
+    .q-card .sub{font-size:9px;line-height:1.4;}
+    .q-card svg{width:20px;height:20px;margin-bottom:5px;}
+    .quadrant-core h2{font-size:11px;}
+    .quadrant-core p{font-size:9px;}
+  }
+
+  /* ===== LEADERSHIP ===== */
+  .leadership{padding:90px 0 40px;border-top:1px solid var(--line);}
+  .leadership-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+  .leadership h2{font-size:clamp(1.8rem,3.2vw,2.6rem);font-weight:600;letter-spacing:-0.02em;line-height:1.15;margin-bottom:20px;}
+  .leadership p{font-size:15.5px;line-height:1.65;color:var(--body);}
+  .stat-callout{background:var(--section-alt);border-radius:20px;padding:32px;}
+  .stat-callout .num{font-size:2.4rem;font-weight:700;letter-spacing:-0.02em;color:var(--ink);}
+  .stat-callout p{font-size:14px;color:var(--body);margin-top:10px;line-height:1.5;}
+
+  /* funnel / maturity diagram */
+  .funnel{display:flex;flex-direction:column;gap:8px;}
+  .funnel-row{display:flex;align-items:center;width:100%;}
+  .funnel-label{width:180px;flex-shrink:0;text-align:right;padding-right:14px;}
+  .funnel-label .title{display:block;font-weight:700;font-size:13.5px;color:var(--ink);line-height:1.3;transition:color .2s ease;}
+  .funnel-label .sub{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+  .funnel-track{flex:1;display:flex;align-items:center;justify-content:flex-end;min-width:20px;}
+  .funnel-line{height:1px;flex:1;background:#e4e4e7;transition:background .2s ease;}
+  .funnel-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:8px;transition:transform .2s ease;}
+  .funnel-bar{height:44px;flex:0 1 0%;min-width:24px;transition:filter .2s ease;}
+  .funnel-spacer{flex:1;}
+  .funnel-row:hover .funnel-label .title{color:#0d9488;}
+  .funnel-row:hover .funnel-dot{transform:scale(1.5);}
+  .funnel-row:hover .funnel-bar{filter:brightness(1.06);}
+  @media (max-width:900px){
+    .leadership-grid{grid-template-columns:1fr;gap:32px;}
+    .funnel-label{width:130px;}
+    .funnel-label .title{font-size:12.5px;}
+  }
+
+  /* ===== TRAINING MODULES ===== */
+  .modules{padding:100px 0;}
+  .section-head{margin-bottom:44px;max-width:640px;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:600;letter-spacing:-0.02em;line-height:1.1;margin-bottom:14px;}
+  .section-head p{color:var(--body);font-size:16px;line-height:1.55;}
+  .modules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .module-card{background:var(--section-alt);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;}
+  .module-icon{width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+  .module-card h3{font-size:15px;font-weight:600;line-height:1.35;}
+  .btn-sm{padding:8px 16px;font-size:12.5px;border-radius:100px;align-self:flex-start;}
+  .btn-sm.btn-outline{cursor:default;}
+  .btn-sm.btn-outline:hover{border-color:var(--chip-border);}
+  @media (max-width:900px){.modules-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.modules-grid{grid-template-columns:1fr;}}
+
+  /* ===== OUR SERVICES (sticky-stack, same pattern as home page) ===== */
+  .services-stack{position:relative;background:var(--ink);}
+  .stack-card{min-height:100dvh;display:flex;align-items:center;justify-content:center;position:sticky;top:0;padding:40px;}
+  .stack-card-inner{width:100%;max-width:1100px;display:grid;grid-template-columns:1fr 1fr;border-radius:var(--radius-card);overflow:hidden;background:#151518;border:1px solid rgba(255,255,255,0.08);}
+  .stack-card-inner img{width:100%;height:520px;object-fit:cover;}
+  .stack-copy{padding:56px;display:flex;flex-direction:column;justify-content:center;color:#fff;}
+  .stack-copy .idx{font-size:13px;color:var(--emphasis);letter-spacing:0.1em;margin-bottom:14px;}
+  .stack-copy h3{font-size:clamp(1.5rem,2.4vw,1.9rem);font-weight:600;letter-spacing:-0.02em;margin-bottom:14px;line-height:1.25;}
+  .stack-copy p{color:#c7c7cb;font-size:15px;line-height:1.65;max-width:36ch;margin-bottom:22px;}
+  .stack-copy .cta-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#fff;}
+
+  /* ===== CTA ===== */
+  .cta-band{padding:60px 0 100px;}
+  .cta-inner{background:var(--ink);border-radius:32px;padding:80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .cta-inner h2{color:#fff;font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:600;letter-spacing:-0.02em;max-width:16ch;line-height:1.15;margin-bottom:16px;}
+  .cta-inner p{color:var(--emphasis);font-size:16px;max-width:44ch;line-height:1.5;}
+  .cta-form{display:grid;gap:16px;}
+  .cta-form .field{display:flex;flex-direction:column;gap:8px;}
+  .cta-form label{font-size:13px;color:var(--emphasis);}
+  .cta-form input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius-input);padding:13px 16px;color:#fff;font-family:inherit;font-size:15px;outline:none;transition:border-color .2s ease;}
+  .cta-form input::placeholder{color:rgba(255,255,255,0.35);}
+  .cta-form input:focus{border-color:rgba(255,255,255,0.4);}
+  .cta-form .btn{margin-top:4px;justify-self:start;background:#fff;color:var(--ink);box-shadow:none;}
+  .cta-form .btn:hover{background:var(--section-alt);}
+  @media (max-width:900px){.cta-inner{padding:48px 28px;border-radius:24px;grid-template-columns:1fr;gap:32px;}}
+
+  /* ===== FOOTER ===== */
+  footer.wrap{padding:56px 40px 40px;text-align:center;}
+  .footer-top{padding-bottom:20px;}
+  .footer-links{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+  .footer-links a{font-size:14.5px;color:var(--body);}
+  .footer-links a:hover{color:var(--ink);}
+  .footer-wordmark{text-align:center;font-size:clamp(3rem,12vw,11rem);font-weight:700;letter-spacing:-0.03em;line-height:1.05;padding-bottom:0.06em;background:linear-gradient(120deg,#09090b 0%,#3f3f46 45%,#a1a1aa 100%);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0;}
+  .footer-bottom{display:flex;justify-content:center;gap:24px;padding-top:28px;margin-top:32px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap;}
+
+  .mobile-menu{position:fixed;inset:0;background:#fff;z-index:200;display:none;flex-direction:column;padding:28px 32px;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px;}
+  .mobile-menu a{font-size:28px;font-weight:600;padding:16px 0;border-bottom:1px solid var(--line);}
+  .mobile-menu .btn{margin-top:32px;align-self:flex-start;}
+</style>
+</head>
+<body>
+
+<header class="site-nav" id="siteNav">
+  <div class="wrap nav-inner">
+    <a href="moreclients.html#top" class="brand">MoreClients</a>
+    <nav class="nav-links">
+      <a href="moreclients-finance.html" class="current">Modern Finance</a>
+      <a href="moreclients-resources.html">Resources</a>
+      <a href="moreclients-about.html">About Us</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#contact" class="btn btn-dark" style="padding:10px 20px;font-size:14px;">Contact us</a>
+      <button class="nav-burger" id="burgerBtn" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 6H21M3 12H21M3 18H21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-top">
+    <span class="brand">MoreClients</span>
+    <button class="nav-burger" id="closeBurger" aria-label="Close menu" style="display:block;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <a href="moreclients-finance.html">Modern Finance</a>
+  <a href="moreclients-resources.html">Resources</a>
+  <a href="moreclients-about.html">About Us</a>
+  <a href="#contact" class="btn btn-dark">Contact us</a>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-headline reveal" data-reveal>How healthy is your financial reporting, really?</h1>
+        <p class="hero-sub reveal" data-reveal>Find out in a single one-hour session.</p>
+        <p class="hero-body reveal" data-reveal>Growth and efficiency stay balanced when planning is driven by data, strategy is tied to resourcing, and communication stays clear across teams. Our operational scorecard is built to surface exactly where your financial and operational setup has gaps — before they become expensive.</p>
+        <a href="#contact" class="btn btn-dark reveal" data-reveal>Get your free scorecard</a>
+      </div>
+      <div class="quadrant-wrap reveal" data-reveal>
+        <div class="quadrant-grid">
+          <div class="q-card radius-a content-top" style="background:#425282;">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 1v1.5m0 5V9m-3.5-3.5L9.5 6m5-1.5L13.5 6M8 5h1.5m5 0h1.5"/><path d="M12 9v3m0 0H6v2m6-2h6v2"/><rect x="4" y="14" width="4" height="4" rx="1"/><rect x="10" y="14" width="4" height="4" rx="1"/><rect x="16" y="14" width="4" height="4" rx="1"/></svg>
+            <h3>Control and<br>Governance</h3>
+            <div class="sub">Statutory Reporting &amp; Compliance<br>Management Accounting</div>
+          </div>
+          <div class="q-card radius-b content-top" style="background:#27325c;">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 19h6c2.5 0 3.5-1 3.5-3v-1c0-1.5-1-2.5-2.5-2.5H16M6 19c-2 0-3-1-3-2.5V15c0-1 1-2 2-2h4"/><path d="M8 13V9c0-1.5 1.5-3 3-3h2c1.5 0 3 1.5 3 3v4c0 2-1.5 4-4 4s-4-2-4-4z"/><path d="M10 6l-1.5-2h7L14 6"/><path d="M10.5 9h3m-3 2.5h3"/></svg>
+            <h3>Funding<br>and Exit</h3>
+            <div class="sub">Capital Markets<br>M&amp;A</div>
+          </div>
+          <div class="q-card radius-b content-bottom" style="background:#5bc4a4;">
+            <h3>Go-to-Market<br>Predictability</h3>
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8m-4-4v4"/><path d="M6 12l2.5-2.5 1.5 1.5 3-3"/><circle cx="14" cy="7" r="1" fill="currentColor"/><circle cx="16" cy="13" r="3"/><path d="M18 15l2 2"/></svg>
+          </div>
+          <div class="q-card radius-a content-bottom" style="background:#4eb395;">
+            <h3>Revenue<br>Visibility</h3>
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 8c0 0 3.5-3.5 9-3.5s9 3.5 9 3.5-3.5 3.5-9 3.5S3 8 3 8z"/><circle cx="12" cy="8" r="1.5"/><path d="M4 17l4-4 2 2 5-5m0 0v3m0-3h-3"/><path d="M5 21h2m2 0h2m2 0h2"/><circle cx="19" cy="16" r="1.5"/><path d="M16.5 21a2.5 2.5 0 015 0"/></svg>
+          </div>
+          <div class="quadrant-core">
+            <div class="dot"></div>
+            <h2>FP&amp;A, Revenue<br>Operations</h2>
+            <p>Business Partnering</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section class="leadership wrap">
+    <div class="leadership-grid">
+      <div>
+        <span class="eyebrow reveal" data-reveal>Leadership development</span>
+        <h2 class="reveal" data-reveal>Building leadership teams that scale with you.</h2>
+        <p class="reveal" data-reveal>Cloud, SaaS, and data skills shift fast — LinkedIn estimates 30-40% of them change every year. We help finance and go-to-market leaders close those gaps: connecting data across systems, planning revenue with real rigor, and thinking like strategic operators, not just reporters.</p>
+      </div>
+      <div class="funnel reveal" data-reveal>
+        <div class="funnel-row">
+          <div class="funnel-label"><span class="title">Go-to-Market Enablement</span><span class="sub">Funding Strategy</span></div>
+          <div class="funnel-track"><div class="funnel-line"></div><div class="funnel-dot" style="background:#99f6e4;"></div></div>
+          <div class="funnel-bar" style="flex-basis:15%;background:#f0fdfa;border-radius:10px 10px 3px 3px;"></div>
+          <div class="funnel-spacer"></div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label"><span class="title">Growth Planning</span><span class="sub">FP&amp;A</span></div>
+          <div class="funnel-track"><div class="funnel-line"></div><div class="funnel-dot" style="background:#5eead4;"></div></div>
+          <div class="funnel-bar" style="flex-basis:30%;background:#99f6e4;border-radius:3px;"></div>
+          <div class="funnel-spacer"></div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label"><span class="title">SaaS Metrics</span><span class="sub">Financial Reporting</span></div>
+          <div class="funnel-track"><div class="funnel-line"></div><div class="funnel-dot" style="background:#14b8a6;"></div></div>
+          <div class="funnel-bar" style="flex-basis:45%;background:#0d9488;border-radius:3px;"></div>
+          <div class="funnel-spacer"></div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label"><span class="title">Structured Data</span><span class="sub">Cash and Controls</span></div>
+          <div class="funnel-track"><div class="funnel-line"></div><div class="funnel-dot" style="background:#64748b;"></div></div>
+          <div class="funnel-bar" style="flex-basis:60%;background:#475569;border-radius:3px;"></div>
+          <div class="funnel-spacer"></div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label"><span class="title">Statutory Reporting</span><span class="sub">Bookkeeping</span></div>
+          <div class="funnel-track"><div class="funnel-line"></div><div class="funnel-dot" style="background:#fb923c;"></div></div>
+          <div class="funnel-bar" style="flex-basis:75%;background:#fb923c;border-radius:3px 3px 10px 10px;"></div>
+          <div class="funnel-spacer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAINING MODULES -->
+  <section class="modules wrap" id="training">
+    <div class="section-head">
+      <span class="eyebrow reveal" data-reveal>SaaS Growth Finance Training</span>
+      <h2 class="reveal" data-reveal>Empower your leaders to scale your business.</h2>
+      <p class="reveal" data-reveal>Eight modules built specifically for growth-stage SaaS finance and revenue teams.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="6" height="6" rx="1" stroke="#09090b" stroke-width="1.5"/><rect x="11" y="3" width="6" height="6" rx="1" stroke="#09090b" stroke-width="1.5"/><rect x="3" y="11" width="6" height="6" rx="1" stroke="#09090b" stroke-width="1.5"/><rect x="11" y="11" width="6" height="6" rx="1" stroke="#09090b" stroke-width="1.5"/></svg></div>
+        <h3>Building Finance &amp; Revenue Operations</h3>
+        <span class="btn btn-outline btn-sm">Coming soon</span>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2.5" width="12" height="15" rx="1.5" stroke="#09090b" stroke-width="1.5"/><path d="M7 6.5h6M7 10h6M7 13.5h3" stroke="#09090b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Management Accounting</h3>
+        <span class="btn btn-outline btn-sm">Coming soon</span>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#09090b" stroke-width="1.5"/><path d="M10 6.5v7M12.5 8.2c0-1-1.1-1.7-2.5-1.7-1.5 0-2.5.7-2.5 1.7 0 2.3 5 1 5 3.3 0 1-1 1.7-2.5 1.7s-2.5-.7-2.5-1.7" stroke="#09090b" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        <h3>Cash Management</h3>
+        <a href="#contact" class="btn btn-dark btn-sm">Watch the video</a>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 15V9M9 15V5M14 15v-7M4 15h12" stroke="#09090b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>SaaS Metrics</h3>
+        <a href="#contact" class="btn btn-dark btn-sm">Watch the video</a>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="2.5" stroke="#09090b" stroke-width="1.5"/><circle cx="14" cy="8" r="2" stroke="#09090b" stroke-width="1.5"/><path d="M3 16c0-2.5 1.8-4.2 4-4.2s4 1.7 4 4.2M12 16c0-1.8 1.2-3 3-3s3 1.2 3 3" stroke="#09090b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Cohort Analysis</h3>
+        <span class="btn btn-outline btn-sm">Coming soon</span>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14l-5 7v5l-4-2v-3L3 4z" stroke="#09090b" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Pipeline Reporting</h3>
+        <span class="btn btn-outline btn-sm">Coming soon</span>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v14M5 6h10M5 6L3 11h4L5 6zM15 6l-2 5h4l-2-5z" stroke="#09090b" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Value &amp; Valuation</h3>
+        <span class="btn btn-outline btn-sm">Coming soon</span>
+      </div>
+      <div class="module-card reveal" data-reveal>
+        <div class="module-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 11l3-3 3 2 6-6M15 4h2v2" stroke="#09090b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 15h14" stroke="#09090b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Fundraising</h3>
+        <span class="btn btn-outline btn-sm">Coming soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR SERVICES (content from pegafund.com/modern-finance, paraphrased) -->
+  <div class="wrap section-head" style="padding-top:60px;">
+    <span class="eyebrow reveal" data-reveal>Our services</span>
+    <h2 class="reveal" data-reveal>Five ways we plug into your finance function.</h2>
+  </div>
+  <section class="services-stack" id="our-services">
+    <div class="stack-card">
+      <div class="stack-card-inner stack-card-el">
+        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=900&h=900&fit=crop&q=80" alt="Team reviewing finance and RevOps set-up together" />
+        <div class="stack-copy">
+          <span class="idx">01 — Set-Up</span>
+          <h3>Finance &amp; Revenue Operations Set-Up</h3>
+          <p>We start with an honest assessment of where your finance and RevOps stack stands today, then build the foundation as a hands-on partner — not a one-off audit.</p>
+          <a href="#contact" class="cta-link">Find out more →</a>
+        </div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-card-inner stack-card-el">
+        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=900&h=900&fit=crop&q=80" alt="Budgeting and forecasting on a calculator" />
+        <div class="stack-copy">
+          <span class="idx">02 — Fractional CFO</span>
+          <h3>Fractional &amp; Interim CFO Services</h3>
+          <p>Full-service support across go-to-market and funding strategy, forecasting, planning, and budgeting — without the cost of a full-time hire.</p>
+          <a href="#contact" class="cta-link">Find out more →</a>
+        </div>
+      </div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-card-inner stack-card-el">
+        <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=900&h=900&fit=crop&q=80" alt="Team working through a training session together" />
+        <div class="stack-copy">
+          <span class="idx">03 — Training</span>
+          <h3>SaaS Growth Finance Training</h3>
+          <p>Invest in the people already on your team — interactive training that builds real finance capability, not just theory.</p>
+          <a href="#contact" class="cta-link">Find out more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA + FORM -->
+  <section class="cta-band wrap" id="contact">
+    <div class="cta-inner">
+      <div>
+        <h2>Let's build your finance function.</h2>
+        <p>Tell us where you are today — we'll tell you what a predictable, board-ready finance team looks like for your stage.</p>
+      </div>
+      <form class="cta-form" novalidate>
+        <div class="field">
+          <label for="cname">Full name</label>
+          <input id="cname" name="name" type="text" placeholder="Jordan Lee" required />
+        </div>
+        <div class="field">
+          <label for="cemail">Work email</label>
+          <input id="cemail" name="email" type="email" placeholder="jordan@company.com" required />
+        </div>
+        <div class="field">
+          <label for="ccompany">Company</label>
+          <input id="ccompany" name="company" type="text" placeholder="Your company" />
+        </div>
+        <button type="submit" class="btn btn-dark">Book a call</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <div class="footer-top">
+      <div class="footer-links">
+        <a href="moreclients-about.html">About us</a>
+        <a href="#contact">Contact us</a>
+        <a href="#">Terms &amp; privacy</a>
+        <a href="#">Press kit</a>
+      </div>
+    </div>
+    <div class="footer-wordmark">MoreClients</div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 MoreClients B.V. All rights reserved.</span>
+      <span>Content adapted for demonstration purposes.</span>
+    </div>
+  </footer>
+
+</main>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGsap = typeof gsap !== 'undefined';
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
+
+  if (!reduceMotion && typeof Lenis !== 'undefined' && hasGsap) {
+    var lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  var nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
+  var burger = document.getElementById('burgerBtn');
+  var closeBurger = document.getElementById('closeBurger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', function(){ mobileMenu.classList.add('open'); });
+  closeBurger.addEventListener('click', function(){ mobileMenu.classList.remove('open'); });
+  mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); }); });
+
+  /* hero entrance */
+  if (hasGsap && !reduceMotion) {
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .fromTo('.hero-headline', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .8 })
+      .fromTo('.hero-sub', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: .6 }, '-=0.5')
+      .fromTo('.hero-body', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: .6 }, '-=0.4')
+      .fromTo('.hero-grid .btn', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: .6 }, '-=0.4')
+      .fromTo('.quadrant-wrap', { y: 20, opacity: 0, scale: .95 }, { y: 0, opacity: 1, scale: 1, duration: .8 }, '-=0.6');
+  } else {
+    document.querySelectorAll('.hero-headline,.hero-sub,.hero-body,.hero-grid .btn,.quadrant-wrap').forEach(function(el){ el.style.opacity = 1; });
+  }
+
+  /* generic scroll reveal */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if (hasGsap && !reduceMotion) {
+    revealEls.forEach(function(el, i){
+      if (el.closest('.hero')) return;
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: .8, ease: 'power3.out',
+        delay: (i % 4) * 0.06,
+        scrollTrigger: { trigger: el, start: 'top 88%' }
+      });
+    });
+  } else {
+    revealEls.forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+  }
+
+  /* our-services sticky-stack */
+  if (hasGsap && !reduceMotion) {
+    var svcCards = gsap.utils.toArray('#our-services .stack-card-el');
+    svcCards.forEach(function(card, i){
+      if (i === svcCards.length - 1) return;
+      gsap.to(card, {
+        scale: 0.92, opacity: 0.5, ease: 'none',
+        scrollTrigger: {
+          trigger: svcCards[i + 1].closest('.stack-card'),
+          start: 'top bottom', end: 'top top', scrub: true
+        }
+      });
+    });
+  }
+
+  /* contact form */
+  var ctaForm = document.querySelector('.cta-form');
+  if (ctaForm) {
+    ctaForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      ctaForm.innerHTML = '<p style="color:#fff;font-size:15px;">Thanks — we will reach out within one business day.</p>';
+    });
+  }
+
+  window.addEventListener('resize', function(){ if (hasGsap) ScrollTrigger.refresh(); });
+})();
+</script>
+
+</body>
+</html>
